@@ -1,0 +1,12 @@
+[submodule "BrowserCookieInterfaces"]
+	path = BrowserCookieInterfaces
+	url = git@github.com:CommentViewerCollection/BrowserCookieInterfaces.git
+[submodule "BrowserCookieImplementations"]
+	path = BrowserCookieImplementations
+	url = git@github.com:CommentViewerCollection/BrowserCookieImplementations.git
+[submodule "IPlugin"]
+	path = IPlugin
+	url = git@github.com:CommentViewerCollection/IPlugin.git
+[submodule "ISitePlugin"]
+	path = ISitePlugin
+	url = git@github.com:CommentViewerCollection/ISitePlugin.git
