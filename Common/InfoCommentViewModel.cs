@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GalaSoft.MvvmLight;
 using SitePlugin;
 namespace Common
 {
@@ -34,10 +35,17 @@ namespace Common
             Type =  InfoType.Debug;
         }
     }
+    /// <summary>
+    /// 情報コメントのインタフェース
+    /// </summary>
     public interface IInfoCommentViewModel : ICommentViewModel
     {
         InfoType Type { get; }
     }
+    /// <summary>
+    /// 情報の種類。
+    /// デバッグ情報や軽微なエラー情報が必要無い場合があるため分類する。
+    /// </summary>
     public enum InfoType
     {
         /// <summary>
@@ -57,5 +65,21 @@ namespace Common
         /// </summary>
         Error,
     }
-
+    public static class InfoTypeRelatedOperations
+    {
+        /// <summary>
+        /// 文字列をInfoTypeに変換する。
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        /// <remarks>InfoTypeをEnumではなくclassにしてこのメソッドもそこに含めたほうが良いかも</remarks>
+        public static InfoType ToInfoType(string s)
+        {
+            if (!Enum.TryParse(s, out InfoType type))
+            {
+                type = InfoType.Notice;
+            }
+            return type;
+        }
+    }
 }
