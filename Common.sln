@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitePlugin", "ISitePlugin\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin", "IPlugin\IPlugin\Plugin.csproj", "{735CFEEE-5B77-4D36-977B-4CD94A6F3CDB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonTests", "CommonTests\CommonTests.csproj", "{6B9E81EA-A563-451C-B185-C7F62CDB8902}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{735CFEEE-5B77-4D36-977B-4CD94A6F3CDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{735CFEEE-5B77-4D36-977B-4CD94A6F3CDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{735CFEEE-5B77-4D36-977B-4CD94A6F3CDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B9E81EA-A563-451C-B185-C7F62CDB8902}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B9E81EA-A563-451C-B185-C7F62CDB8902}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B9E81EA-A563-451C-B185-C7F62CDB8902}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B9E81EA-A563-451C-B185-C7F62CDB8902}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
