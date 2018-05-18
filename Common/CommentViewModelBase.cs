@@ -139,6 +139,7 @@ namespace Common
         public CommentViewModelBase(ICommentOptions options)
         {
             _options = options;
+            _options.PropertyChanged += Options_PropertyChanged;
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
