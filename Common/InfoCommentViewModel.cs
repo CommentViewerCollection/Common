@@ -46,6 +46,7 @@ namespace Common
     /// 情報の種類。
     /// デバッグ情報や軽微なエラー情報が必要無い場合があるため分類する。
     /// </summary>
+    /// <remarks>大小比較ができるように</remarks>
     public enum InfoType
     {
         /// <summary>
@@ -53,17 +54,17 @@ namespace Common
         /// </summary>
         None,
         /// <summary>
-        /// 例外全て
+        /// 致命的なエラーがあった場合だけ。必要最小限の情報
         /// </summary>
-        Debug,
+        Error,
         /// <summary>
         /// 
         /// </summary>
         Notice,
         /// <summary>
-        /// 致命的なエラーがあった場合だけ。必要最小限の情報
+        /// 例外全て
         /// </summary>
-        Error,
+        Debug,
     }
     public static class InfoTypeRelatedOperations
     {
