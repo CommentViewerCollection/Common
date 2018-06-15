@@ -19,7 +19,7 @@ namespace Common
             IsInfo = true;
             MessageItems = new List<IMessagePart>
             {
-                new MessageText(message),
+                MessagePartFactory.CreateMessageText(message),
             };
             Type = type;
         }
@@ -30,7 +30,7 @@ namespace Common
             IsInfo = true;
             MessageItems = new List<IMessagePart>
             {
-                new MessageText(message),
+                MessagePartFactory.CreateMessageText(message),
             };
             Type =  InfoType.Debug;
         }

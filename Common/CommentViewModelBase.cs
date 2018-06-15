@@ -18,7 +18,7 @@ namespace Common
             {
                 if (!string.IsNullOrEmpty(User.Nickname))
                 {
-                    return new List<IMessagePart> { new MessageText(User.Nickname) };
+                    return new List<IMessagePart> { MessagePartFactory.CreateMessageText(User.Nickname) };
                 }
                 else
                 {
