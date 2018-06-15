@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System.Linq;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows;
 using SitePlugin;
+using System.Text.RegularExpressions;
 
 namespace Common
 {
@@ -134,7 +135,29 @@ namespace Common
         public virtual bool IsVisible { get; protected set; } = true;
 
         public ICommentProvider CommentProvider { get; protected set; }
-        
+        /// <summary>
+        /// 文字列から@ニックネームを抽出する
+        /// 文字列中に@が複数ある場合は一番最後のものを採用する
+        /// 数字だけのニックネームは不可
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        protected string ExtractNickname(string text)
+        {
+            var matches = Regex.Matches(text, "(?:@|＠)(\\S+)", RegexOptions.Singleline);
+            if (matches.Count > 0)
+            {
+                foreach(Match match in matches.Cast<Match>().Reverse())
+                {
+                    var val = match.Groups[1].Value;
+                    if (!int.TryParse(val, out _))
+                    {
+                        return val;
+                    }
+                }
+            }
+            return null;
+        }
         private readonly ICommentOptions _options;
         public CommentViewModelBase(ICommentOptions options)
         {
