@@ -9,7 +9,7 @@ namespace Common
             return MessageText.New(text);
         }
     }
-    public class MessageText : IMessageText
+    internal class MessageText : IMessageText
     {
         public string Text { get; }
         public static MessageText New(string text)
@@ -18,8 +18,7 @@ namespace Common
             return new MessageText(text);
 #pragma warning restore CS0618 // Type or member is obsolete
         }
-        [Obsolete("Use MessagePartFactory.CreateMessageText() instead")]
-        public MessageText(string text)//TODO:移行が済み次第classをinternalにし、obsoleteを解除する（2018/06/15）
+        public MessageText(string text)
         {
             Text = text;
         }
