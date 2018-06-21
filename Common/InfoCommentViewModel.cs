@@ -10,11 +10,10 @@ namespace Common
     {
         public override string UserId => "-";
         private readonly static IUser _user = new UserTest("-") { Nickname = "-" };
-        public override IUser User => _user;
         public InfoType Type { get; }
 
         public InfoCommentViewModel(ICommentOptions options, string message, InfoType type)
-            : base(options)
+            : base(options, _user, null, false)
         {
             IsInfo = true;
             MessageItems = new List<IMessagePart>
@@ -25,7 +24,7 @@ namespace Common
         }
         [Obsolete]
         public InfoCommentViewModel(ICommentOptions options, string message)
-            : base(options)
+            : base(options, _user, null, false)
         {
             IsInfo = true;
             MessageItems = new List<IMessagePart>

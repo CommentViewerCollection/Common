@@ -38,7 +38,7 @@ namespace Common
         public virtual string Id { get; protected set; }
 
         public abstract string UserId { get; }
-        public abstract IUser User { get; }
+        public IUser User { get; }
 
         public bool IsInfo { get; protected set; }
 
@@ -159,12 +159,37 @@ namespace Common
             return null;
         }
         private readonly ICommentOptions _options;
-        public CommentViewModelBase(ICommentOptions options)
+        public CommentViewModelBase(ICommentOptions options, IUser user, ICommentProvider commentProvider, bool isFirstComment)
         {
             _options = options;
             _options.PropertyChanged += Options_PropertyChanged;
+            User = user;
+            user.PropertyChanged += (s, e) =>
+            {
+                switch (e.PropertyName)
+                {
+                    case nameof(user.IsNgUser):
+                        SetVisibility(user);
+                        break;
+                    case nameof(user.BackColorArgb):
+                        RaisePropertyChanged(nameof(Background));
+                        break;
+                    case nameof(user.ForeColorArgb):
+                        RaisePropertyChanged(nameof(Foreground));
+                        break;
+                    case nameof(user.Nickname):
+                        RaisePropertyChanged(nameof(NameItems));
+                        break;
+                }
+            };
+            SetVisibility(user);
+            IsFirstComment = isFirstComment;
+            CommentProvider = commentProvider;
         }
-
+        private void SetVisibility(IUser user)
+        {
+            IsVisible = !user.IsNgUser;
+        }
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)

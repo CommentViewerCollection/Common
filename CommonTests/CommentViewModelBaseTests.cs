@@ -18,12 +18,11 @@ namespace CommonTests
         {
             public override string UserId => throw new NotImplementedException();
 
-            public override IUser User => throw new NotImplementedException();
             public string Do(string text)
             {
                 return ExtractNickname(text);
             }
-            public Impl(ICommentOptions options) : base(options)
+            public Impl(ICommentOptions options) : base(options, new UserTest(""),null, false)
             {
 
             }
