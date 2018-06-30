@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SitePlugin;
 namespace Common
 {
@@ -7,6 +8,24 @@ namespace Common
         public static IMessageText CreateMessageText(string text)
         {
             return MessageText.New(text);
+        }
+    }
+    public static class MessagePartsTools
+    {
+        public static string ToText(this IEnumerable<IMessagePart> items)
+        {
+            var list = new List<string>();
+            foreach(var item in items)
+            {
+                if(item is IMessageText text)
+                {
+                    list.Add(text.Text);
+                }else if(item is IMessageLink link)
+                {
+                    list.Add(link.Text);
+                }
+            }
+            return string.Join("", list);
         }
     }
     internal class MessageText : IMessageText
