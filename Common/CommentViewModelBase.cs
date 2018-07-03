@@ -7,11 +7,18 @@ using System.Windows.Media;
 using System.Windows;
 using SitePlugin;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
+using System.Diagnostics;
 
 namespace Common
 {
     public abstract class CommentViewModelBase : ICommentViewModel
     {
+        public ICommand CommentCopyCommand { get; }
+        public ICommand OpenUrlCommand { get; }
+        public ICommand UsernameCopyCommand { get; }
+        public ICommand NicknameCopyCommand { get; }
         public virtual IEnumerable<IMessagePart> NameItems
         {
             get
@@ -179,12 +186,18 @@ namespace Common
                         break;
                     case nameof(user.Nickname):
                         RaisePropertyChanged(nameof(NameItems));
+                        RaisePropertyChanged(nameof(HasNickname));
                         break;
                 }
             };
             SetVisibility(user);
             IsFirstComment = isFirstComment;
             CommentProvider = commentProvider;
+
+            OpenUrlCommand = new RelayCommand(OpenUrl);
+            CommentCopyCommand = new RelayCommand(CopyComment);
+            UsernameCopyCommand = new RelayCommand(CopyUsername);
+            NicknameCopyCommand = new RelayCommand(CopyNickname);
         }
         private void SetVisibility(IUser user)
         {
@@ -217,7 +230,78 @@ namespace Common
                     break;
             }
         }
+        /// <summary>
+        /// 文字列からURLを抽出する
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static List<string> ExtractUrl(string str)
+        {
+            const string urlPattern = @"(?:h?ttps?://|www\.)\S+";
+            var matches = Regex.Matches(str, urlPattern, RegexOptions.Compiled | RegexOptions.Singleline);
+            var list = new List<string>();
+            foreach (Match match in matches)
+            {
+                list.Add(match.Groups[0].Value);
+            }
+            return list;
+        }
+        private void OpenUrl()
+        {
+            var text = MessageItems.ToText();
+            var list = ExtractUrl(text);
+            if (list.Count > 0)
+            {
+                Process.Start(list[0]);
+            }
+        }
+        public bool ContainsUrl
+        {
+            get
+            {
+                var text = MessageItems.ToText();
+                var list = ExtractUrl(text);
+                return list.Count > 0;
+            }
+        }
+        private void CopyComment()
+        {
+            var items = MessageItems;
 
+            var strs = items.Where(a => a is IMessageText).Cast<IMessageText>().Select(b => b.Text);
+            var str = string.Join("", strs);
+            SetClipboard(str);
+        }
+        public bool HasNickname => !string.IsNullOrEmpty(User.Nickname);
+        private void CopyNickname()
+        {
+            var nick = User.Nickname;
+            if (string.IsNullOrEmpty(nick))
+                return;
+
+            SetClipboard(nick);
+        }
+        private static void SetClipboard(string str)
+        {
+            try
+            {
+                Clipboard.SetText(str);
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                //SetInfo("クリップボードのオープンに失敗しました。", InfoType.Error);
+            }
+        }
+
+        private void CopyUsername()
+        {
+            var items = User.Name;
+
+            var strs = items.Where(a => a is IMessageText).Cast<IMessageText>().Select(b => b.Text);
+            var str = string.Join("", strs);
+            SetClipboard(str);
+        }
         #region INotifyPropertyChanged
         [NonSerialized]
         private System.ComponentModel.PropertyChangedEventHandler _propertyChanged;
