@@ -119,6 +119,7 @@ namespace Common
         }
         private static string ToJson(IEnumerable<IMessagePart> items)
         {
+            if (items == null) return "null";
             var list = new List<string>();
             foreach (var item in items)
             {
@@ -156,12 +157,15 @@ namespace Common
             var isNg = d.is_ng.Value.ToLower() == "true";
             var name = d.name;
             var nameItems = new List<IMessagePart>();
-            foreach (var nameItem in d.name)
+            if (name != null)
             {
-                if (nameItem.type == "text")
+                foreach (var nameItem in name)
                 {
-                    var val = nameItem.value.Value;
-                    nameItems.Add(MessagePartFactory.CreateMessageText(val));
+                    if (nameItem.type == "text")
+                    {
+                        var val = nameItem.value.Value;
+                        nameItems.Add(MessagePartFactory.CreateMessageText(val));
+                    }
                 }
             }
             var user = new UserTest(userId) { Name = nameItems, Nickname = nick, BackColorArgb = backColor, ForeColorArgb = foreColor, IsNgUser = isNg };
