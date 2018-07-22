@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 namespace Common
 {
+    [Serializable]
     public abstract class DynamicOptionsBase : INotifyPropertyChanged
     {
         Dictionary<string, Item> _dict = new Dictionary<string, Item>();
@@ -104,6 +105,17 @@ namespace Common
                 }
             }
         }
+        protected static T DeepClone<T>(T obj)
+        {
+            using (var ms = new System.IO.MemoryStream())
+            {
+                var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                formatter.Serialize(ms, obj);
+                ms.Position = 0;
+
+                return (T)formatter.Deserialize(ms);
+            }
+        }
         #region INotifyPropertyChanged
         [NonSerialized]
         private System.ComponentModel.PropertyChangedEventHandler _propertyChanged;
@@ -124,7 +136,7 @@ namespace Common
             _propertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
         #endregion
-
+        [Serializable]
         protected class Item
         {
             /// <summary>
