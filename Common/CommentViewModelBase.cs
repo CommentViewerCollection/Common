@@ -51,6 +51,8 @@ namespace Common
 
         public bool IsFirstComment { get; protected set; }
 
+        public bool Is184 { get; protected set; } = false;
+
         public string PostTime { get; protected set; } = "-";
 
         public virtual IMessageImage Thumbnail { get; protected set; }
