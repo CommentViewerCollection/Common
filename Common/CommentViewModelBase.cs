@@ -324,9 +324,9 @@ namespace Common
             _propertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
 
-        public Task AfterCommentAdded()
+        public virtual Task AfterCommentAdded()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
         #endregion
     }
