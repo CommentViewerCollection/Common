@@ -153,6 +153,8 @@ namespace Common
         /// <returns></returns>
         protected string ExtractNickname(string text)
         {
+            if (string.IsNullOrEmpty(text))
+                return null;
             var matches = Regex.Matches(text, "(?:@|＠)(\\S+)", RegexOptions.Singleline);
             if (matches.Count > 0)
             {
@@ -178,7 +180,7 @@ namespace Common
                 switch (e.PropertyName)
                 {
                     case nameof(user.IsNgUser):
-                        SetVisibility(user);
+                        SetVisibility();
                         break;
                     case nameof(user.BackColorArgb):
                         RaisePropertyChanged(nameof(Background));
@@ -192,7 +194,6 @@ namespace Common
                         break;
                 }
             };
-            SetVisibility(user);
             IsFirstComment = isFirstComment;
             CommentProvider = commentProvider;
 
@@ -201,9 +202,13 @@ namespace Common
             UsernameCopyCommand = new RelayCommand(CopyUsername);
             NicknameCopyCommand = new RelayCommand(CopyNickname);
         }
-        private void SetVisibility(IUser user)
+        protected virtual void Init()
         {
-            IsVisible = !user.IsNgUser;
+            SetVisibility();
+        }
+        protected virtual void SetVisibility()
+        {
+            IsVisible = !User.IsNgUser;
         }
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
