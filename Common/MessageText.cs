@@ -14,6 +14,10 @@ namespace Common
     {
         public static string ToText(this IEnumerable<IMessagePart> items)
         {
+            if(items == null)
+            {
+                return null;
+            }
             var list = new List<string>();
             foreach(var item in items)
             {
