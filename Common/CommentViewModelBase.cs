@@ -19,26 +19,22 @@ namespace Common
         public ICommand OpenUrlCommand { get; }
         public ICommand UsernameCopyCommand { get; }
         public ICommand NicknameCopyCommand { get; }
+        protected IEnumerable<IMessagePart> NickItemsInternal { get; set; }
+        protected IEnumerable<IMessagePart> NameItemsInternal { get; set; }
         public virtual IEnumerable<IMessagePart> NameItems
         {
             get
             {
                 if (!string.IsNullOrEmpty(User.Nickname))
                 {
-                    return new List<IMessagePart> { MessagePartFactory.CreateMessageText(User.Nickname) };
+                    return NickItemsInternal;
                 }
                 else
                 {
-                    return _nameItems;
+                    return NameItemsInternal;
                 }
             }
-            protected set
-            {
-                _nameItems = value;
-            }
         }
-
-        private IEnumerable<IMessagePart> _nameItems;
         public virtual IEnumerable<IMessagePart> MessageItems { get; protected set; }
         public virtual string Info { get; protected set; }
 
@@ -169,6 +165,17 @@ namespace Common
             }
             return null;
         }
+        protected virtual void NicknameChanged()
+        {
+            if (!string.IsNullOrEmpty(User.Nickname))
+            {
+                NickItemsInternal = new List<IMessagePart> { MessagePartFactory.CreateMessageText(User.Nickname) };
+            }
+            else
+            {
+                NickItemsInternal = null;
+            }
+        }
         private readonly ICommentOptions _options;
         public CommentViewModelBase(ICommentOptions options, IUser user, ICommentProvider commentProvider, bool isFirstComment)
         {
@@ -189,6 +196,7 @@ namespace Common
                         RaisePropertyChanged(nameof(Foreground));
                         break;
                     case nameof(user.Nickname):
+                        NicknameChanged();
                         RaisePropertyChanged(nameof(NameItems));
                         RaisePropertyChanged(nameof(HasNickname));
                         break;
