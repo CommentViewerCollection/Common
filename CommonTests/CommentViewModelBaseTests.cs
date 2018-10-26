@@ -16,6 +16,7 @@ namespace CommonTests
     {
         internal class Impl : CommentViewModelBase
         {
+            public override MessageType MessageType { get; protected set; }
             public override string UserId => throw new NotImplementedException();
 
             public string Do(string text)

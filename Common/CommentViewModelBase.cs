@@ -43,13 +43,13 @@ namespace Common
         public abstract string UserId { get; }
         public IUser User { get; }
 
-        public bool IsInfo { get; protected set; }
+        public abstract MessageType MessageType { get; protected set; }
 
         public bool IsFirstComment { get; protected set; }
 
         public bool Is184 { get; protected set; } = false;
 
-        public string PostTime { get; protected set; } = "-";
+        public string PostTime { get; set; } = "-";
 
         public virtual IMessageImage Thumbnail { get; protected set; }
 
@@ -111,9 +111,13 @@ namespace Common
         {
             get
             {
-                if (IsInfo)
+                if (MessageType == MessageType.SystemInfo)
                 {
                     return new SolidColorBrush(_options.InfoForeColor);
+                }
+                else if(MessageType == MessageType.BroadcastInfo)
+                {
+                    return new SolidColorBrush(_options.BroadcastInfoForeColor);
                 }
                 else
                 {
@@ -126,9 +130,13 @@ namespace Common
         {
             get
             {
-                if (IsInfo)
+                if (MessageType == MessageType.SystemInfo)
                 {
                     return new SolidColorBrush(_options.InfoBackColor);
+                }
+                else if (MessageType == MessageType.BroadcastInfo)
+                {
+                    return new SolidColorBrush(_options.BroadcastInfoBackColor);
                 }
                 else
                 {

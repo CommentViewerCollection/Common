@@ -6,32 +6,66 @@ using GalaSoft.MvvmLight;
 using SitePlugin;
 namespace Common
 {
-    public class InfoCommentViewModel : CommentViewModelBase, IInfoCommentViewModel
+    public class SystemInfoCommentViewModel : CommentViewModelBase, IInfoCommentViewModel
     {
         public override string UserId => "-";
         private readonly static IUser _user = new UserTest("-") { Nickname = "-" };
         public InfoType Type { get; }
+        public override MessageType MessageType { get; protected set; } = MessageType.SystemInfo;
 
-        public InfoCommentViewModel(ICommentOptions options, string message, InfoType type)
+        public SystemInfoCommentViewModel(ICommentOptions options, string message, InfoType type)
             : base(options, _user, null, false)
         {
-            IsInfo = true;
             MessageItems = new List<IMessagePart>
             {
                 MessagePartFactory.CreateMessageText(message),
             };
             Type = type;
         }
-        [Obsolete]
-        public InfoCommentViewModel(ICommentOptions options, string message)
-            : base(options, _user, null, false)
+    }
+    public class BroadcastInfoCommentViewModel : CommentViewModelBase, IInfoCommentViewModel
+    {
+        public override string UserId => "-";
+        private static readonly IUser DefaultUser = new UserTest("-") { Nickname = "-" };
+        public InfoType Type { get; }
+        public override MessageType MessageType { get; protected set; } = MessageType.BroadcastInfo;
+
+        /// <summary>
+        /// 来場者数とかのような特定のユーザが出したものではない場合にこっち
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="message"></param>
+        public BroadcastInfoCommentViewModel(ICommentOptions options, string message)
+            : base(options, DefaultUser, null, false)
         {
-            IsInfo = true;
             MessageItems = new List<IMessagePart>
             {
                 MessagePartFactory.CreateMessageText(message),
             };
-            Type =  InfoType.Debug;
+        }
+        /// <summary>
+        /// 投げ銭とかアイテムとかユーザを識別したい場合に使う
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="message"></param>
+        /// <param name="user"></param>
+        public BroadcastInfoCommentViewModel(ICommentOptions options, string message, IUser user, ICommentProvider cp)
+            : this(options, new List<IMessagePart> { MessagePartFactory.CreateMessageText(message) }, user, cp)
+        { }
+        /// <summary>
+        /// 投げ銭とかアイテムとかユーザを識別したい場合に使う
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="message"></param>
+        /// <param name="user"></param>
+        public BroadcastInfoCommentViewModel(ICommentOptions options, List<IMessagePart> messageItems, IUser user, ICommentProvider cp)
+            : base(options, user, cp, false)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            MessageItems = messageItems;
         }
     }
     /// <summary>
