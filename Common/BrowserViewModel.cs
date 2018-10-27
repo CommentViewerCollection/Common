@@ -4,6 +4,18 @@ namespace Common
 {
     public class BrowserViewModel
     {
+        public override int GetHashCode()
+        {
+            return Browser.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            if(obj is BrowserViewModel vm)
+            {
+                return this.Browser.Equals(vm.Browser);
+            }
+            return false;
+        }
         public string DisplayName
         {
             get
