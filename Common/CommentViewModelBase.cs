@@ -221,6 +221,7 @@ namespace Common
         protected virtual void Init()
         {
             SetVisibility();
+            NicknameChanged();
         }
         protected virtual void SetVisibility()
         {
