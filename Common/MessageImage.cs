@@ -19,7 +19,7 @@ namespace Common
             }
             if (obj is MessageImage image)
             {
-                return this.Url.Equals(image.Url) && this.Alt.Equals(image.Alt);
+                return string.Equals(this.Url, image.Url) && string.Equals(this.Alt, image.Alt);
             }
             return false;
         }
