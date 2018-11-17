@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CommentViewModelBaseTests.cs" />
     <Compile Include="InfoTypeTests.cs" />
+    <Compile Include="LoggerTestTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
