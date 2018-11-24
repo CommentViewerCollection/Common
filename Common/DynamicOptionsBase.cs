@@ -172,7 +172,11 @@ namespace Common
                 var typeToReflect = originalObject.GetType();
                 if (IsPrimitive(typeToReflect)) return originalObject;
                 if (visited.ContainsKey(originalObject)) return visited[originalObject];
-                if (typeof(Delegate).IsAssignableFrom(typeToReflect)) return null;
+                if (typeof(Delegate).IsAssignableFrom(typeToReflect))
+                {
+                    //デリゲートの場合はオリジナルをそのまま帰すようにした。
+                    return originalObject;
+                }
                 var cloneObject = CloneMethod.Invoke(originalObject, null);
                 if (typeToReflect.IsArray)
                 {
