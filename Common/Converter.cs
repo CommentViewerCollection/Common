@@ -131,7 +131,7 @@ namespace Common.Wpf
         {
             var items = new ObservableCollection<Inline>();
             var image = value as IMessageImage;
-            if (image == null)
+            if (image == null || string.IsNullOrEmpty(image.Url))
                 return items;//nullを返したらDataGridでVirtualizationModeをRecyclingにしている場合に他の画像が表示されてしまう
             var inline = ConverterTools.Convert(image);
             items.Add(inline);
